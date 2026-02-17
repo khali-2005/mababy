@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💝 Pour toi mon amour 💝</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* Cœurs flottants en arrière-plan */
+        .heart-bg {
+            position: absolute;
+            font-size: 40px;
+            animation: float 6s infinite ease-in-out;
+            opacity: 0.3;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(10deg); }
+        }
+
+        .container {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 500px;
+            position: relative;
+            z-index: 10;
+            margin: 20px auto;
+        }
+
+        h1 {
+            color: #e91e63;
+            font-size: 2em;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .image-container {
+            margin: 20px 0;
+            width: 250px;
+            height: 250px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.1);
+        }
+
+        .question {
+            font-size: 1.5em;
+            color: #333;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        #yesBtn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        #yesBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(245, 87, 108, 0.4);
+        }
+
+        #noBtn {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #333;
+        }
+
+        #noBtn:hover {
+            transform: translateY(-3px);
+        }
+
+        .message {
+            font-size: 1.3em;
+            color: #666;
+            margin-top: 20px;
+            font-style: italic;
+        }
+
+        /* Page de succès */
+        .success-page {
+            display: none;
+        }
+
+        .success-page.active {
+            display: block;
+        }
+
+        .success-page h1 {
+            font-size: 3em;
+            color: #e91e63;
+        }
+
+        .success-page p {
+            font-size: 1.5em;
+            color: #555;
+            margin: 20px 0;
+        }
+
+        /* Confettis */
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .love-message {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Cœurs flottants -->
+    <div class="heart-bg" style="top: 10%; left: 10%;">💕</div>
+    <div class="heart-bg" style="top: 20%; right: 15%; animation-delay: 1s;">💖</div>
+    <div class="heart-bg" style="bottom: 15%; left: 20%; animation-delay: 2s;">💗</div>
+    <div class="heart-bg" style="bottom: 25%; right: 10%; animation-delay: 1.5s;">💝</div>
+
+    <canvas id="confetti"></canvas>
+
+    <div class="container">
+        <div id="questionPage">
+            <h1>💝 Pour Ma Valentine 💝</h1>
+            
+            <div class="image-container">
+                <img id="mainImage" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTFxYzN3aXJkYzN0Z3ppemJ0OHNqOHk5c3RqN2ZxYXJ3bTNrYnpvciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/MDJ9IbxxvDUQM/giphy.gif" alt="cute">
+            </div>
+
+            <p class="question" id="questionText">Veux-tu être ma Valentine ? 💘</p>
+            
+            <div class="buttons">
+                <button id="yesBtn" onclick="sayYes()">OUI ! 💕</button>
+                <button id="noBtn" onclick="sayNo()">Non...</button>
+            </div>
+
+            <p class="message" id="message"></p>
+        </div>
+
+        <div id="successPage" class="success-page">
+            <h1>🎉 YAAAY! 🎉</h1>
+            <p>Je savais que tu dirais oui ! 💖</p>
+            <div class="image-container">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcnVoaXVlYXJhaDhtd3NrYmpvbDJlM3g4ZHNsZ3NqNHNydWp6MGppYSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/R6gvnAxj2ISzJdbA63/giphy.gif" alt="celebration">
+            </div>
+            <div class="love-message">
+                <p>💕 Tu es la personne la plus incroyable que je connaisse 💕</p>
+                <p>💖 Cette Saint-Valentin sera magique avec toi 💖</p>
+                <p>💝 Je t'aime plus que tout ! 💝</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let noCount = 0;
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const message = document.getElementById('message');
+        const mainImage = document.getElementById('mainImage');
+        
+        // Messages qui changent quand elle clique sur "Non"
+        const noMessages = [
+            "Tu es sûre ? 🥺",
+            "Vraiment sûre ?? 😢",
+            "Réfléchis bien... 💔",
+            "S'il te plaît... 🥺👉👈",
+            "Je vais pleurer... 😭",
+            "Mon cœur se brise 💔😭",
+            "Dernier chance ! 🙏",
+            "NOOOON ! Regarde le bouton OUI ! 👀"
+        ];
+
+        // GIFs qui changent selon les "Non"
+        const noImages = [
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTFxYzN3aXJkYzN0Z3ppemJ0OHNqOHk5c3RqN2ZxYXJ3bTNrYnpvciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/MDJ9IbxxvDUQM/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmZkb2pvb3AzZGtycnN5MzZ0eW5qOHdpNmpoZG5iOTRpN2UzcDQwdCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/L95W4wv8nnb9K/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZzRjZGdqN2I4aGJ1MmR5aWN4emZzN3M5bjdkb2pqZ3dsaGN1aTBvMCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/kiBcwEXegBTACmVOnE/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmJ4cjl2Z3htdnhoYXN4ZXdqaWhxcHMxMnI5dGNocThmYXhiemR3NCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/OPU6wzx8JrHna/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYnk4NHhxazJ4NXB3ZGtpOGw5N3U0bXRzM2YzaDlyaWE0bW9xZGRkbSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ISOckXUybVfQ4/giphy.gif"
+        ];
+
+        function sayNo() {
+            noCount++;
+            
+            // Change le message
+            if (noCount <= noMessages.length) {
+                message.textContent = noMessages[noCount - 1];
+            }
+            
+            // Change l'image
+            if (noCount <= noImages.length) {
+                mainImage.src = noImages[Math.min(noCount - 1, noImages.length - 1)];
+            }
+            
+            // Le bouton "Oui" grandit !
+            const newSize = 1 + (noCount * 0.3);
+            yesBtn.style.transform = `scale(${newSize})`;
+            
+            // Le bouton "Non" change de texte
+            const noTexts = ["Non...", "Toujours non ?", "Vraiment ?", "Arrête !", "STOP !", "Pourquoi ?! 😭", "OK c'est bon..."];
+            if (noCount <= noTexts.length) {
+                noBtn.textContent = noTexts[noCount];
+            }
+            
+            // Animation du bouton Non qui bouge
+            noBtn.style.animation = 'shake 0.5s';
+            setTimeout(() => {
+                noBtn.style.animation = '';
+            }, 500);
+        }
+
+        function sayYes() {
+            document.getElementById('questionPage').style.display = 'none';
+            document.getElementById('successPage').classList.add('active');
+            
+            // Lancer les confettis !
+            launchConfetti();
+            
+            // Confettis continus pendant 5 secondes
+            const confettiInterval = setInterval(launchConfetti, 300);
+            setTimeout(() => {
+                clearInterval(confettiInterval);
+            }, 5000);
+        }
+
+        // Animation shake pour le bouton Non
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px) rotate(-5deg); }
+                75% { transform: translateX(10px) rotate(5deg); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // CONFETTIS !
+        const canvas = document.getElementById('confetti');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const confettiColors = ['#ff6b9d', '#c44569', '#f8b500', '#fa8231', '#eb3b5a', '#fd79a8'];
+        const confettiPieces = [];
+
+        class Confetti {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = -20;
+                this.size = Math.random() * 10 + 5;
+                this.speedY = Math.random() * 3 + 2;
+                this.speedX = Math.random() * 2 - 1;
+                this.color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = Math.random() * 5 - 2.5;
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                this.rotation += this.rotationSpeed;
+
+                if (this.y > canvas.height) {
+                    this.y = -20;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation * Math.PI / 180);
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+                ctx.restore();
+            }
+        }
+
+        function launchConfetti() {
+            for (let i = 0; i < 50; i++) {
+                confettiPieces.push(new Confetti());
+            }
+        }
+
+        function animateConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            confettiPieces.forEach((piece, index) => {
+                piece.update();
+                piece.draw();
+                
+                if (piece.y > canvas.height + 50) {
+                    confettiPieces.splice(index, 1);
+                }
+            });
+            
+            requestAnimationFrame(animateConfetti);
+        }
+
+        animateConfetti();
+
+        // Redimensionner le canvas
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
